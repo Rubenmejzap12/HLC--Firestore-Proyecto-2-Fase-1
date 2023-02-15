@@ -79,7 +79,7 @@ export class DetallePage implements OnInit {
           text: 'SI',
           role: 'confirm',
           handler: () => {
-            this.clicBotonBorrar();
+            this.clickBotonBorrar();
           },
         },
       ],
@@ -91,13 +91,14 @@ export class DetallePage implements OnInit {
     this.roleMessage = `Dismissed with role: ${role}`;
   }
 
-  clicBotonBorrar() {
+  clickBotonBorrar() {
+    this.deleteFile(this.document.data.Imagen);
     this.firestoreService.borrar('aeropuertos', this.id).then(() => {
       this.router.navigate(['/home']);
     });
   }
 
-  clicBotonModificar() {
+  clickBotonModificar() {
     this.firestoreService
       .actualizar('aeropuertos', this.id, this.document.data)
       .then(() => {
