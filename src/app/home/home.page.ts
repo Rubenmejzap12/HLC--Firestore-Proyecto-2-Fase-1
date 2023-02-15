@@ -1,59 +1,54 @@
 import { Component } from '@angular/core';
-import { Aeropuerto } from '../tarea';
-
+import { Router } from '@angular/router';
+import { Aeropuerto } from '../aeropuerto';
 import { FirestoreService } from '../firestore.service';
-import {Router} from '@angular/router';
-
 
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
-  
 })
 export class HomePage {
 
+  idAeropuertoSelec: string;
   aeropuertoEditando: Aeropuerto;
   arrayColeccionAeropuertos: any = [{
     id: "",
     data: {} as Aeropuerto
   }];
+
   constructor(private firestoreService: FirestoreService, private router: Router) {
-    // Crear una tarea vacia al empezar
+    // Crear un aeropuerto vacio al empezar
     this.aeropuertoEditando = {} as Aeropuerto;
+
     this.obtenerListaAeropuertos();
   }
 
-  clickBotonInsertar(){
-    this.firestoreService.insertar("aeropuertos",this.aeropuertoEditando)
-    .then(()=>{
-      console.log("Tarea creada correctamente");
-      this.aeropuertoEditando = {} as Aeropuerto;
-    },(error) =>{
-      console.error(error)
-    });
+  clickBotonInsertar() {
+    this.router.navigate(['/detalle', "nuevo"]);
   }
 
-  obtenerListaAeropuertos(){
-    this.firestoreService.consultar("aeropuertos").subscribe((resultadoConsultaAeropuertos) => {
-      this.arrayColeccionAeropuertos = [];
-      resultadoConsultaAeropuertos.forEach((datosAeropuertos: any) => {
-        this.arrayColeccionAeropuertos.push({
-          id: datosAeropuertos.payload.doc.id,
-          data: datosAeropuertos.payload.doc.data()
-        })
-      })
-    }
-    )
+  obtenerListaAeropuertos() {
+    this.firestoreService
+      .consultar('aeropuertos')
+      .subscribe((resultadoConsultaAeropuertos) => {
+        this.arrayColeccionAeropuertos = [];
+        resultadoConsultaAeropuertos.forEach((datosAeropuerto: any) => {
+          this.arrayColeccionAeropuertos.push({
+            id: datosAeropuerto.payload.doc.id,
+            data: datosAeropuerto.payload.doc.data()
+          });
+        });
+      });
   }
-  idAeropuertoSelec: string;
 
-  selecAeropuerto(aeropuertoSelec) {
-    console.log("Aeropuerto seleccionada: ");
-    console.log(aeropuertoSelec);
-    this.idAeropuertoSelec = aeropuertoSelec.id;
-    this.aeropuertoEditando.nombre = aeropuertoSelec.data.nombre;
-    this.aeropuertoEditando.continente = aeropuertoSelec.data.continente;
+
+  selecAeropuerto(AeropuertoSelec) {
+    console.log("Aeropuerto seleccionado: ");
+    console.log(AeropuertoSelec);
+    this.idAeropuertoSelec = AeropuertoSelec.id;
+    this.aeropuertoEditando.nombre = AeropuertoSelec.data.nombre;
+    this.aeropuertoEditando.continente = AeropuertoSelec.data.continente;
     this.router.navigate(['/detalle', this.idAeropuertoSelec]);
   }
 
@@ -65,6 +60,7 @@ export class HomePage {
       this.aeropuertoEditando = {} as Aeropuerto;
     })
   }
+
 
   clicBotonModificar() {
     this.firestoreService.actualizar("aeropuertos", this.idAeropuertoSelec, this.aeropuertoEditando).then(() => {

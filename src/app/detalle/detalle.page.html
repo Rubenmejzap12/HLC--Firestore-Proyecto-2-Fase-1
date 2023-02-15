@@ -1,9 +1,33 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>detalle</ion-title>
+    <ion-title size="large" class="título">Detalle</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-  <p>{{ id }}</p>
+<ion-content class="c1">
+
+  <ion-card class="c3">
+    <ion-card-header>
+      <ion-card-title>Nombre</ion-card-title>
+      <ion-card-subtitle>
+        <ion-input [(ngModel)]="document.data.nombre"></ion-input>
+      </ion-card-subtitle>
+    </ion-card-header>
+
+
+    <ion-card-header>
+      <ion-card-title>Continente</ion-card-title>
+      <ion-card-subtitle>
+        <ion-input [(ngModel)]="document.data.continente"></ion-input>
+      </ion-card-subtitle>
+    </ion-card-header>
+
+    <ion-button class="c2" fill="clear" (click)="volver()">Volver </ion-button>
+    <ion-button class="c2" fill="clear" *ngIf="(!this.nuevo)" (click)="presentAlert()">Borrar </ion-button>
+    <ion-button class="c2" fill="clear" *ngIf="(!this.nuevo)" (click)="clicBotonModificar()">Modificar
+    </ion-button>
+    <ion-button class="c2" fill="clear" *ngIf="(this.nuevo)" (click)="clickBotonInsertar()">Guardar
+    </ion-button>
+    <ion-button class="c2" fill="clear" *ngIf="(!this.nuevo)"> Imagen </ion-button>
+  </ion-card>
 </ion-content>

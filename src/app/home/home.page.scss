@@ -1,27 +1,30 @@
-#container {
-  text-align: center;
-
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
-}
-
-#container strong {
-  font-size: 20px;
-  line-height: 26px;
-}
-
-#container p {
-  font-size: 16px;
-  line-height: 22px;
-
-  color: #8c8c8c;
-
-  margin: 0;
-}
-
 #container a {
   text-decoration: none;
+}
+
+.añadir{
+  font-size: 300%;
+
+  position: fixed;
+  bottom: 20px;
+  right: 30px;
+}
+
+ion-card{
+  box-shadow: 0 0 10px rgb(251, 255, 0);
+}
+
+.c1{
+  --background: rgb(250, 239, 81);
+
+}
+
+.c2{
+  --background: rgb(94, 255, 0);
+
+
+}
+.c3{
+  --background: rgb(250, 255, 180);
+
 }
