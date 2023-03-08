@@ -1,47 +1,44 @@
-<ion-header [translucent]="true" class="c3">
+<ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>
-      AEROPUERTOS
+      Aeropuertos
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true" class="c1">
-
-  <ion-card class="c3">
-    <ion-card-header>
-      <ion-card-title>PROYECTO FIREBASE - AEROPUERTOS</ion-card-title>
-      <ion-card-subtitle></ion-card-subtitle>
-    </ion-card-header>
-    <ion-card-content>
-
-      <ion-grid >
-
-        <ion-row >
-          <ion-col *ngFor="let documentAeropuerto of arrayColeccionAeropuertos"
-            (click)="selecAeropuerto(documentAeropuerto)" size-xl="3" size-lg="3" size-md="4"
-            size-sm="6" size-xs="12"> 
-
-            <ion-card>
-
-              <ion-card-header>
-                <ion-card-title>
-                  <h1>{{documentAeropuerto.data.nombre}}</h1>
-                </ion-card-title>
-                <ion-card-subtitle>
-                  <h1><ion-text color="primary"></ion-text>{{documentAeropuerto.data.continente}}</h1>
-                </ion-card-subtitle>
-              </ion-card-header>
-            </ion-card>
-
-
-          </ion-col>
-        </ion-row>
-
-      </ion-grid>
-
-    </ion-card-content>
-  </ion-card>
-
-  <ion-fab-button class="añadir c2"  (click)="clickBotonInsertar()"> +</ion-fab-button>
+<ion-content [fullscreen]="true">
+  <h1>Lista de Aeropuertos</h1>
+  <ion-grid> 
+    <ion-row>
+      <ion-col *ngFor="let documentAeropuerto of arrayColeccionAeropuertos" (click)="selecAeropuerto(documentAeropuerto)"
+      size="12" size-md="4" size-lg="3">
+        <ion-card>
+          <img alt="{{documentAeropuerto.data.nombre}}" src="{{documentAeropuerto.data.Imagen}}" width="100%"/>
+          <ion-card-header>
+            <ion-card-title>{{ documentAeropuerto.data.nombre }}</ion-card-title>
+            <ion-card-subtitle>{{ documentAeropuerto.data.continente }}</ion-card-subtitle>
+          </ion-card-header>        
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  
+  <ion-fab-button (click)="selecAeropuerto(false)" class="añadir">+</ion-fab-button>
+  <ion-fab-button (click)="llamar()" class="llamada"><ion-icon name="call"></ion-icon></ion-fab-button>
 </ion-content>
+<!-- Mapa -->
+<div id="mapId" style="width:40%; height:40%; "></div> 
+<ion-toolbar>
+  <ion-tabs>
+    <ion-tab-bar slot="bottom">
+      <ion-tab-button tab="home">
+        <ion-icon name="home" id="icons"></ion-icon>
+        <ion-label>Inicio</ion-label>
+      </ion-tab-button>
+      <ion-tab-button tab="info">
+        <ion-icon name="information-circle" id="icons"></ion-icon>
+        <ion-label>Informacion App</ion-label>
+      </ion-tab-button>
+    </ion-tab-bar>
+  </ion-tabs>
+</ion-toolbar>

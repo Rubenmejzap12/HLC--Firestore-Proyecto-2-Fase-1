@@ -1,12 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { Aeropuerto } from '../aeropuerto'
+import { ActivatedRoute, Router } from '@angular/router';
 import { FirestoreService } from '../firestore.service';
-import { Router } from '@angular/router';
-import { ToastController } from '@ionic/angular';
-import { AlertController } from '@ionic/angular';
-import { LoadingController } from '@ionic/angular';
+import { Aeropuerto } from '../aeropuerto';
+import { AlertController, LoadingController, ToastController } from '@ionic/angular';
 import { ImagePicker } from '@awesome-cordova-plugins/image-picker/ngx';
+import { SocialSharing } from '@awesome-cordova-plugins/social-sharing/ngx';
 
 @Component({
   selector: 'app-detalle',
@@ -15,36 +13,29 @@ import { ImagePicker } from '@awesome-cordova-plugins/image-picker/ngx';
 })
 export class DetallePage implements OnInit {
 
-  id: string = ""
+  id: string = "";
+  nueva: boolean;
+
   document: any = {
     id: "",
     data: {} as Aeropuerto
   };
-  nuevo: boolean;
-  handlerMessage = '';
-  roleMessage = '';
 
-  constructor(
-    private activatedRoute: ActivatedRoute,
-    private firestoreService: FirestoreService,
-    private router: Router,
-    private loadingController: LoadingController,
-
-    private alertController: AlertController,
-    private toastController: ToastController,
-    private imagePicker: ImagePicker
-  ) { }
-
+  roleMessage: boolean;
+  constructor(private activatedRoute: ActivatedRoute, private firestoreService: FirestoreService,
+     private router: Router, private alertController: AlertController, private loadingController: LoadingController,
+     private toastController: ToastController, private imagePicker: ImagePicker, private socialSharing: SocialSharing) { }
 
   ngOnInit() {
+
     this.id = this.activatedRoute.snapshot.paramMap.get('id');
 
-    if (this.id == 'nuevo') {
-      this.nuevo = true;
+    if (this.id == "nueva") {
+      this.nueva = true;
       this.document.data = {} as Aeropuerto;
-    } else {
-      this.nuevo = false;
 
+    } else {
+      this.nueva = false;
       this.firestoreService.consultarPorId("aeropuertos", this.id).subscribe((resultado) => {
         // Preguntar si se hay encontrado un document con ese ID
         if (resultado.payload.data() != null) {
@@ -57,30 +48,51 @@ export class DetallePage implements OnInit {
           this.document.data = {} as Aeropuerto;
         }
       });
-
     }
 
   }
 
-  volver() {
+  clickBotonInsertar() {
+    this.firestoreService.insertar("aeropuertos", this.document.data).then(
+      () => {
+        console.log("Aeropuerto creada correctamente");
+        //Limpiamos el contenido de la aeropuerto que se estaba editando
+        this.document.data = {} as Aeropuerto
+      }, (error) => {
+        console.log(error);
+      }
+    );
     this.router.navigate(['/home']);
+  }
+
+  clickBotonVolver() {
+    this.router.navigate(['/home']);
+  }
+  clickBotonBorrar() {
+    this.deleteFile(this.document.data.Imagen);
+    this.firestoreService.borrar("aeropuertos", this.id).then(() => {
+      this.clickBotonVolver();
+    })
+    
+  }
+
+  clickBotonModificar() {
+    this.firestoreService.actualizar("aeropuertos", this.id, this.document.data).then(() => {
+      this.clickBotonVolver();
+    })
   }
 
   async presentAlert() {
     const alert = await this.alertController.create({
-      header: '¡¿Quieres borrar el aeropuerto?!',
+      header: '¿Borrar este aeropuerto?',
       buttons: [
         {
-          text: 'NO',
+          text: 'Cancelar',
           role: 'cancel',
-          handler: () => {},
         },
         {
-          text: 'SI',
+          text: 'Sí',
           role: 'confirm',
-          handler: () => {
-            this.clickBotonBorrar();
-          },
         },
       ],
     });
@@ -88,60 +100,23 @@ export class DetallePage implements OnInit {
     await alert.present();
 
     const { role } = await alert.onDidDismiss();
-    this.roleMessage = `Dismissed with role: ${role}`;
-  }
 
-  clickBotonBorrar() {
-    this.deleteFile(this.document.data.Imagen);
-    this.firestoreService.borrar('aeropuertos', this.id).then(() => {
-      this.router.navigate(['/home']);
-    });
-  }
+    if(role=="confirm") {
+      this.clickBotonBorrar();
 
-  clickBotonModificar() {
-    this.firestoreService
-      .actualizar('aeropuertos', this.id, this.document.data)
-      .then(() => {
-        // Actualizar la lista completa
-        this.router.navigate(['/home']);
-      });
-  }
-
-  clickBotonInsertar() {
-    this.firestoreService.insertar('aeropuertos', this.document.data).then(
-      () => {
-        console.log('Aeropuerto creado correctamente');
-        // //Limpiamos el contenido de aeropuertoEditanto
-        this.document.data = {} as Aeropuerto;
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
-
-    this.router.navigate(['/home']);
-    this.presentToast('top');
-  }
-
-  async presentToast(position: 'top') {
-    const toast = await this.toastController.create({
-      message: 'Aeropuerto añadido correctamente',
-      duration: 1500,
-      position: position,
-      color: 'success',
-    });
-
-    await toast.present();
+    }
+    
   }
 
   async uploadImagePicker() {
     const loading = await this.loadingController.create({
-      message: 'please wait...',
+      message: 'Espere un momento...',
     });
 
     const toast = await this.toastController.create({
-      message: 'image was updated successfully',
+      message: 'Imagen actualizada con éxito',
       duration: 3000,
+      
     });
 
     this.imagePicker.hasReadPermission().then(
@@ -169,6 +144,7 @@ export class DetallePage implements OnInit {
                     .then((snapshot) => {
                       snapshot.ref.getDownloadURL().then((downloadURL) => {
                         console.log('downloadURL:' + downloadURL);
+                        this.document.data.Imagen = downloadURL;
                         toast.present();
                         loading.dismiss();
                       });
@@ -189,7 +165,7 @@ export class DetallePage implements OnInit {
   async deleteFile(fileURL){
 
     const toast = await this.toastController.create({
-      message:"File was deleted sucesfully",
+      message:"Archivo borrado con éxtio",
       duration: 3000
     });
 
@@ -202,4 +178,9 @@ export class DetallePage implements OnInit {
 
       });
   }
+
+  compartir(){
+    this.socialSharing.share()
+  }
+
 }

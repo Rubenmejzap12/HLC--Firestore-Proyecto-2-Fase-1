@@ -1,34 +1,39 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title size="large" class="título">Detalle</ion-title>
+    <ion-title size="large" class="título">Detalles Aeropuertos</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="c1">
-
-  <ion-card class="c3">
+<ion-content>
+  <ion-card>
     <ion-card-header>
-      <img *ngIf="(!this.nuevo)" alt="{{document.data.nombre}}" src="{{document.data.Imagen}}" width="300" height="400"/>
-      <ion-card-title>Nombre</ion-card-title>
-      <ion-card-subtitle>
-        <ion-input [(ngModel)]="document.data.nombre"></ion-input>
-      </ion-card-subtitle>
+      <img *ngIf="(!this.nueva)" alt="{{document.data.nombre}}" src="{{document.data.imagen}}" width="300" height="400"/>
     </ion-card-header>
-
-
-    <ion-card-header>
-      <ion-card-title>Continente</ion-card-title>
-      <ion-card-subtitle>
-        <ion-input [(ngModel)]="document.data.continente"></ion-input>
-      </ion-card-subtitle>
-    </ion-card-header>
-
-    <ion-button class="c2" fill="clear" (click)="volver()">Volver </ion-button>
-    <ion-button class="c2" fill="clear" *ngIf="(!this.nuevo)" (click)="presentAlert()">Borrar </ion-button>
-    <ion-button class="c2" fill="clear" *ngIf="(!this.nuevo)" (click)="clickBotonModificar()">Modificar
-    </ion-button>
-    <ion-button class="c2" fill="clear" *ngIf="(this.nuevo)" (click)="clickBotonInsertar()">Guardar
-    </ion-button>
-    <ion-button class="c2" fill="clear" *ngIf="(!this.nuevo)"> Imagen </ion-button>
+    <ion-card-content>
+      <ion-card-title>Nombre:<ion-input [(ngModel)]="document.data.nombre"></ion-input></ion-card-title>
+      <ion-card-title>Continente:<ion-input [(ngModel)]="document.data.continente"></ion-input></ion-card-title>
+      
+    </ion-card-content>
   </ion-card>
+  <ion-button (click)="clickBotonVolver()">Volver</ion-button>
+  <ion-button (click)="clickBotonInsertar()" *ngIf="(this.nueva)">Insertar</ion-button>
+  <ion-button (click)="clickBotonModificar()" *ngIf="(!this.nueva)">Modificar</ion-button>
+  <ion-button (click)="uploadImagePicker()" >Examinar</ion-button>
+  <ion-button (click)="compartir()" *ngIf="(!this.nueva)">Compartir</ion-button>
+  <ion-button (click)="presentAlert()" *ngIf="(!this.nueva)">Borrar</ion-button>
 </ion-content>
+
+<ion-toolbar>
+  <ion-tabs id="tab">
+    <ion-tab-bar slot="bottom">
+      <ion-tab-button tab="home">
+        <ion-icon name="home" id="icons"></ion-icon>
+        <ion-label>Inicio</ion-label>
+      </ion-tab-button>
+      <ion-tab-button tab="info">
+        <ion-icon name="information-circle" id="icons"></ion-icon>
+        <ion-label>Informacion App</ion-label>
+      </ion-tab-button>
+    </ion-tab-bar>
+  </ion-tabs>
+</ion-toolbar>

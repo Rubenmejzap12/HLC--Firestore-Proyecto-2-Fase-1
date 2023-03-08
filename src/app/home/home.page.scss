@@ -1,30 +1,79 @@
+#container {
+  text-align: center;
+
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+#container strong {
+  font-size: 20px;
+  line-height: 26px;
+}
+
+#container p {
+  font-size: 16px;
+  line-height: 22px;
+
+  color: #8c8c8c;
+
+  margin: 0;
+}
+
 #container a {
   text-decoration: none;
 }
 
-.añadir{
+.añadir{ 
+
   font-size: 300%;
-
   position: fixed;
-  bottom: 20px;
-  right: 30px;
+  bottom: 60px;
+  right: 20px;
+  --background: #78db27;
+}
+.llamada{ 
+
+  font-size: 300%;
+  position: fixed;
+  bottom: 60px;
+  right: 80px;
+  --background: #78db27;
 }
 
-ion-card{
-  box-shadow: 0 0 10px rgb(251, 255, 0);
+ion-content{
+  --background: #f6ffc2;
 }
 
-.c1{
-  --background: rgb(250, 239, 81);
-
+ion-toolbar{
+  --background: #eaff32;
 }
 
-.c2{
-  --background: rgb(94, 255, 0);
-
-
+ion-title,h1:nth-child(0),h1:nth-child(1){
+  font-weight: bold;
+  color: rgb(70, 70, 70);
+  font-size: 30px;
 }
-.c3{
-  --background: rgb(250, 255, 180);
 
+h1{
+  padding-left: 1%;
+}
+
+#icons{
+  color: #2ad100;
+}
+
+
+@media (max-width: 768px) {
+  #mapId {
+    height: 30vh;
+  }
+}
+
+@media (max-width: 480px) {
+  #mapId {
+    height: 20vh;
+  }
 }
