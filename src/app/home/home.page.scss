@@ -42,6 +42,15 @@
   right: 80px;
   --background: #78db27;
 }
+.compartir{
+  margin-bottom: 40px;
+  margin-right: 10px;
+  font-size: 300%;
+  position: fixed;
+  bottom: 20px;
+  right: 130px;
+  --background: #78db27;
+}
 
 ion-content{
   --background: #f6ffc2;
@@ -66,14 +75,3 @@ h1{
 }
 
 
-@media (max-width: 768px) {
-  #mapId {
-    height: 30vh;
-  }
-}
-
-@media (max-width: 480px) {
-  #mapId {
-    height: 20vh;
-  }
-}

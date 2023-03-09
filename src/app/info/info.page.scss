@@ -50,4 +50,17 @@
     margin: 20px;
     color: #8c8c8c;
   }
+
+  // Mapa
+  @media (max-width: 768px) {
+    #mapId {
+      height: 30vh;
+    }
+  }
+  
+  @media (max-width: 580px) {
+    #mapId {
+      height: 20vh;
+    }
+  }
   

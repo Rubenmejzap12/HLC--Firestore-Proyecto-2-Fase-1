@@ -13,7 +13,7 @@
       <ion-col *ngFor="let documentAeropuerto of arrayColeccionAeropuertos" (click)="selecAeropuerto(documentAeropuerto)"
       size="12" size-md="4" size-lg="3">
         <ion-card>
-          <img alt="{{documentAeropuerto.data.nombre}}" src="{{documentAeropuerto.data.Imagen}}" width="100%"/>
+          <img alt="{{documentAeropuerto.data.nombre}}" src="{{documentAeropuerto.data.imagen}}" width="100%"/>
           <ion-card-header>
             <ion-card-title>{{ documentAeropuerto.data.nombre }}</ion-card-title>
             <ion-card-subtitle>{{ documentAeropuerto.data.continente }}</ion-card-subtitle>
@@ -25,9 +25,9 @@
   
   <ion-fab-button (click)="selecAeropuerto(false)" class="añadir">+</ion-fab-button>
   <ion-fab-button (click)="llamar()" class="llamada"><ion-icon name="call"></ion-icon></ion-fab-button>
+  <ion-fab-button (click)="compartir()" class="compartir"><ion-icon name="share"></ion-icon></ion-fab-button>
 </ion-content>
-<!-- Mapa -->
-<div id="mapId" style="width:40%; height:40%; "></div> 
+
 <ion-toolbar>
   <ion-tabs>
     <ion-tab-bar slot="bottom">

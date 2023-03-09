@@ -3,7 +3,7 @@ import { FirestoreService } from '../firestore.service';
 import { Aeropuerto } from '../aeropuerto';
 import { Router } from '@angular/router';
 import { CallNumber } from '@awesome-cordova-plugins/call-number/ngx';
-import * as L from 'leaflet';
+import { SocialSharing } from '@awesome-cordova-plugins/social-sharing/ngx';
 
 @Component({
   selector: 'app-home',
@@ -21,12 +21,10 @@ export class HomePage {
   }];
   idAeropuertoSelec: string;
 
-  map: L.Map;
-  newMarker:any;
-  address:string[];
 
   constructor(private firestoreService: FirestoreService, private router: Router, 
-     private callNumber: CallNumber
+     private callNumber: CallNumber,
+     private socialSharing: SocialSharing
     ) {
 
     this.aeropuertoEditando = {} as Aeropuerto;
@@ -83,17 +81,20 @@ export class HomePage {
 
   }
 
-  ionViewDidEnter(){
-    this.loadMap();
+  compartir() {
+    const options = {
+      message: 'Hola esto es compartir con SocialSharing',
+      chooserTitle: 'Compartir con...'
+    };
+
+    this.socialSharing.shareWithOptions(options)
+      .then(() => {
+        console.log('Mensaje compartido correctamente');
+      }).catch((error) => {
+        console.log('Error al compartir el mensaje: ', error);
+      });
   }
 
-  loadMap() {
-    let latitud = 40.4736600;
-    let longitud = -3.5777700;
-    let zoom = 17;
-    this.map = L.map("mapId").setView([latitud, longitud], zoom);
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png')
-        .addTo(this.map);
-  }
+
 
 }

@@ -22,9 +22,13 @@ export class DetallePage implements OnInit {
   };
 
   roleMessage: boolean;
-  constructor(private activatedRoute: ActivatedRoute, private firestoreService: FirestoreService,
-     private router: Router, private alertController: AlertController, private loadingController: LoadingController,
-     private toastController: ToastController, private imagePicker: ImagePicker, private socialSharing: SocialSharing) { }
+  constructor(private activatedRoute: ActivatedRoute, 
+    private firestoreService: FirestoreService,
+     private router: Router, 
+     private alertController: AlertController, 
+     private loadingController: LoadingController,
+     private toastController: ToastController, 
+     private imagePicker: ImagePicker, ) { }
 
   ngOnInit() {
 
@@ -69,7 +73,7 @@ export class DetallePage implements OnInit {
     this.router.navigate(['/home']);
   }
   clickBotonBorrar() {
-    this.deleteFile(this.document.data.Imagen);
+    this.deleteFile(this.document.data.imagen);
     this.firestoreService.borrar("aeropuertos", this.id).then(() => {
       this.clickBotonVolver();
     })
@@ -110,58 +114,52 @@ export class DetallePage implements OnInit {
 
   async uploadImagePicker() {
     const loading = await this.loadingController.create({
-      message: 'Espere un momento...',
+      message: 'Espere...'
     });
-
     const toast = await this.toastController.create({
-      message: 'Imagen actualizada con éxito',
-      duration: 3000,
-      
+      message: 'La imágen fue actualizada con éxito',
+      duration: 3000
     });
-
-    this.imagePicker.hasReadPermission().then(
+    this.imagePicker.hasReadPermission().then (
       (result) => {
-        if (result == false) {
+        if(result == false) {
           this.imagePicker.requestReadPermission();
-        } else {
-          this.imagePicker
-            .getPictures({
-              maximumImagesCount: 1,
-              outputType: 1,
-            })
-            .then(
-              (results) => {
-                let nombreCarpeta = 'imagenes';
-
-                for (let i = 0; i < results.length; i++) {
-                  loading.present();
-
-                  let nombreImagen = `${new Date().getTime()}`;
-
-                  this.firestoreService
-                    .uploadImage(nombreCarpeta, nombreImagen, results[i])
-
-                    .then((snapshot) => {
-                      snapshot.ref.getDownloadURL().then((downloadURL) => {
-                        console.log('downloadURL:' + downloadURL);
-                        this.document.data.Imagen = downloadURL;
+        }
+        else {
+          this.imagePicker.getPictures({
+            maximumImagesCount: 1,
+            outputType: 1
+          }).then (
+            (results) => {
+              let nombreCarpeta = "imagenes";
+              for (var i = 0; i < results.length; i++) {
+                console.log("1234");
+                loading.present();
+                console.log("Hola");
+                let nombreImagen = `${new Date().getTime()}`;
+                console.log(nombreCarpeta);
+                console.log(nombreImagen);
+                //console.log(results[i]);
+                this.firestoreService.uploadImage(nombreCarpeta, nombreImagen, results[i])
+                  .then(snapshot => {
+                    snapshot.ref.getDownloadURL()
+                      .then(downloadURL => {
+                        console.log("downloadURL: " + downloadURL);
                         toast.present();
                         loading.dismiss();
-                      });
-                    });
-                }
-              },
-              (err) => {
-                console.log(err);
+                      })
+                  })
               }
-            );
+            },
+            (err) => {
+              console.log(err)
+            }
+          );
         }
-      },
-      (err) => {
+      }, (err) => {
         console.log(err);
-      }
-    );
-  }
+      });
+}
   async deleteFile(fileURL){
 
     const toast = await this.toastController.create({
@@ -179,8 +177,5 @@ export class DetallePage implements OnInit {
       });
   }
 
-  compartir(){
-    this.socialSharing.share()
-  }
 
 }

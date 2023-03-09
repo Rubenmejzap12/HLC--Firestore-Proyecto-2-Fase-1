@@ -8,6 +8,10 @@ const routes: Routes = [
     component: HomePage,
   },
   {
+    path: 'home',
+    redirectTo: '/home'
+  },
+  {
     path: 'info',
     redirectTo: '/info'
   }
