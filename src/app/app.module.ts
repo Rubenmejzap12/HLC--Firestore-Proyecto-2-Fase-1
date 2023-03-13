@@ -20,11 +20,8 @@ import { CallNumber } from '@awesome-cordova-plugins/call-number/ngx';
 
 @NgModule({
   declarations: [AppComponent],
-  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule,
-     AngularFireModule.initializeApp(environment.firebaseConfig), AngularFireModule,
-    AngularFireStorageModule, AngularFirestoreModule ],
-  providers: [ImagePicker, { provide: RouteReuseStrategy, useClass: IonicRouteStrategy}, SocialSharing, CallNumber
-  ],
+  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, AngularFireModule.initializeApp(environment.firebaseConfig), AngularFireModule, AngularFireStorageModule],
+  providers: [ImagePicker, { provide: RouteReuseStrategy, useClass: IonicRouteStrategy}, SocialSharing, CallNumber],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
